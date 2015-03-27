@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol  SeasonalitySingleMonthDelegate <NSObject>
+
+@required
+
+- (void)selectedProduct:(NSString*)productId;
+
+@end
+
 
 @interface SeasonalitySingleMonthTableViewController : UITableViewController
 @property (nonatomic) int MonthId;
+@property (nonatomic, weak) id <SeasonalitySingleMonthDelegate> monthDelegate;
 @end

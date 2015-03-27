@@ -30,8 +30,43 @@
     
     self.seasonalityData=[self.dbManager getSeasonDataForProductId:self.ProductId inRegion:[AppDelegate getCurrentRegion]];
 
+   
     
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    float width=self.view.frame.size.width/3-1;
+    float height=30;
+    for (int y=0; y<4; y++)
+    {
+        for (int x=0; x<3; x++)
+        {
+            int monthNumber = y*3+x+1;
+            NSString * dateString = [NSString stringWithFormat: @"%d", monthNumber];
+            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MM"];
+            NSDate* myDate = [dateFormatter dateFromString:dateString];
+            
+            
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"MMMM"];
+            NSString *stringFromDate = [formatter stringFromDate:myDate];
+            
+            
+            UILabel *month=[[UILabel alloc] initWithFrame:CGRectMake(x*width+2, y*height+2, width-1, height-1)];
+            
+            NSLog(@"Frame %d: %f x %f",monthNumber, month.frame.origin.x, month.frame.origin.y);
+            month.text=stringFromDate;
+            month.textAlignment=NSTextAlignmentCenter;
+            
+             float percent= ([self.seasonalityData[monthNumber-1] integerValue])/100.0;
+            month.backgroundColor=[UIColor colorWithRed:145/255.0 green:211/255.0 blue:148/255.0 alpha:(1) ] ;
+            month.alpha=percent;
+            month.textColor=[UIColor whiteColor];
+           
+            [self.view addSubview:month];
+            
+        }
+        
+    }
+  /*
     self.monthOverlays=[[NSMutableArray alloc] initWithCapacity:12];
     float x=0;
     float y=20;
@@ -79,13 +114,13 @@
         //self.monthOverlays[i]=monthOverlay;
         
         
-    }
+    }*/
     // Do any additional setup after loading the view.
   }
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
    // self.topLayoutGuide
-    CGRect frm=self.seasonImage.frame;
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -7,8 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol SeasonalityChartDelegate <NSObject>
+
+@required
+
+- (void)transitionedToMonth:(int)monthId;
+
+@end
+
 
 @interface SeasonalityChartViewController : UIPageViewController
 @property int currentMonthId;
-
+@property (nonatomic, weak) id <SeasonalityChartDelegate> chartDelegate;
 @end

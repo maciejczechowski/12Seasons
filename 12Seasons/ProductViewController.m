@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UIButton *showMore;
 @property int currentPage;
 @property (nonatomic, strong) NSString *currentRecipeUrl;
+@property (nonatomic, strong) NSString *rId;
 @end
 
 @implementation ProductViewController
@@ -40,8 +41,10 @@
     RKObjectMapping *recipeMapping = [RKObjectMapping mappingForClass:[F2FRecipe class]];
     [recipeMapping addAttributeMappingsFromArray:@[@"title"]];
     [recipeMapping addAttributeMappingsFromArray:@[@"image_url"]];
-      [recipeMapping addAttributeMappingsFromArray:@[@"f2f_url"]];
-         [recipeMapping addAttributeMappingsFromArray:@[@"publisher_url"]];
+    [recipeMapping addAttributeMappingsFromArray:@[@"f2f_url"]];
+    [recipeMapping addAttributeMappingsFromArray:@[@"publisher_url"]];
+    [recipeMapping addAttributeMappingsFromArray:@[@"source_url"]];
+    [recipeMapping addAttributeMappingsFromArray:@[@"recipe_id"]];
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor =
     [RKResponseDescriptor responseDescriptorWithMapping:recipeMapping
@@ -84,7 +87,7 @@
     self.locationManager = [[CLLocationManager alloc] init];
     [self.locationManager requestWhenInUseAuthorization];
     self.locationManager.delegate=self;
-       [self.locationManager startUpdatingLocation];
+    
     self.showMore= [UIButton buttonWithType:UIButtonTypeSystem];
     [self.showMore setTitle:@"Show other" forState:UIControlStateNormal];
     [self.showMore addTarget:self action:@selector(showOther:) forControlEvents:UIControlEventTouchUpInside];
@@ -109,8 +112,12 @@
     self.title=[dbm getProductById:self.productId];
     [self configureRestKit];
     [self loadRecipes];
+    [self.locationManager startUpdatingLocation];
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [self.locationManager stopUpdatingLocation];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -201,7 +208,8 @@
 }
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section==1){
-        self.currentRecipeUrl=((F2FRecipe*)self.recipes[indexPath.row]).publisher_url;
+        self.currentRecipeUrl=((F2FRecipe*)self.recipes[indexPath.row]).source_url;
+        self.rId=((F2FRecipe*)self.recipes[indexPath.row]).recipe_id;
     }
     return indexPath;
 
@@ -221,6 +229,7 @@
     {
         RecipeViewController *rvc=(RecipeViewController*)segue.destinationViewController;
         rvc.recipeUrl=self.currentRecipeUrl;
+        rvc.recipeId=self.rId;
     }
 }
 

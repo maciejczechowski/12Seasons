@@ -16,7 +16,7 @@
 #import "ParseManager.h"
 #import "CongratulationsViewController.h"
 
-@interface FoundItTableViewController ()  <MKMapViewDelegate>
+@interface FoundItTableViewController ()  <MKMapViewDelegate, CongratulationsDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *txtComment;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellPlace;
@@ -27,7 +27,7 @@
 - (IBAction)saveAction:(id)sender;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong) NSString *productName;
-
+@property int score;
 
 - (IBAction)cancelAction:(id)sender;
 
@@ -51,6 +51,7 @@
     lpgr.minimumPressDuration = 1.0;  //user must press for 2 seconds
     [self.mapView addGestureRecognizer:lpgr];
     self.productName=[[[DbManager alloc] init] getProductById:self.ProductId];
+    self.cellProduct.textLabel.text=self.productName;
  //   self.navigationItem.prompt=self.productName;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -129,12 +130,12 @@
     
     [ParseManager saveDataForItem:self.ProductId withLatitude:self.currentAnnotatedPlace.coordinate.latitude withLongitude:self.currentAnnotatedPlace.coordinate.longitude inPlacemark:self.placemarkName withComments:self.txtComment.text resutHandler:^(PFObject *result, NSError *error) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        
+        self.score=[(NSNumber*)result[@"score"] intValue];
         
         if (!error)
         {
             [self performSegueWithIdentifier:@"showCongrats" sender:self];
-            [self.navigationController popViewControllerAnimated:NO];
+        
 
         } else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Save error"
@@ -152,15 +153,23 @@
 - (IBAction)cancelAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+-(void)finished{
+    [self dismissViewControllerAnimated:YES completion:^{
+           [self.navigationController popViewControllerAnimated:YES];
+    }
+   ];
+}
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
     if ([[segue identifier] isEqualToString:@"showCongrats"])
     {
+      
         CongratulationsViewController *cvc=(CongratulationsViewController*)segue.destinationViewController;
         cvc.productName=self.productName;
         cvc.location=[[CLLocation alloc] initWithLatitude:self.currentAnnotatedPlace.coordinate.latitude longitude:self.currentAnnotatedPlace.coordinate.longitude];
         cvc.venue=self.placemarkName;
+        cvc.delegate=self;
+        cvc.score=self.score;
     }
 
 }

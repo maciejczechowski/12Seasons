@@ -9,9 +9,10 @@
 #import "SeasonalitySingleMonthTableViewController.h"
 #import "DbManager.h"
 #import "AppDelegate.h"
-
+#import "ProductViewController.h"
 @interface SeasonalitySingleMonthTableViewController ()
 @property (nonatomic, strong) NSArray *seasonalProducts;
+@property (nonatomic, strong) NSString *productId;
 @end
 
 @implementation SeasonalitySingleMonthTableViewController
@@ -19,6 +20,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView  registerClass:[UITableViewCell class] forCellReuseIdentifier:@"pc"];
+    self.tableView.backgroundColor=[UIColor clearColor];
+    self.tableView.opaque=NO;
+ //   self.tableView.superview.backgroundColor=[UIColor greenColor];
+  //  self.view.backgroundColor=[UIColor clearColor];
+    self.view.opaque=NO;
    // self.automaticallyAdjustsScrollViewInsets=NO;
    // self.tableView.contentInset=UIEdgeInsetsMake(64,0,0,0);
     // Uncomment the following line to preserve selection between presentations.
@@ -46,7 +52,22 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return  35;
+}
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    // Background color
+    view.tintColor = [UIColor blackColor];
+    
+    // Text Color
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    [header.textLabel setTextColor:[UIColor whiteColor]];
+   // header.textLabel.backgroundColor= [UIColor blackColor];
+    // Another way to set the background color
+    //Note: does not preserve gradient effect of original header
+     header.contentView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+}
 -(void)setMonthId:(int)MonthId{
     self->_MonthId=MonthId;
     self.title=[NSString stringWithFormat:@"Month %i",MonthId];
@@ -81,11 +102,29 @@
     return [self.seasonalProducts count];
 }
 
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    self.productId=self.seasonalProducts[indexPath.row][@"ID"];
+    if (self.monthDelegate)
+       [ self.monthDelegate selectedProduct:self.productId];
+   
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"pc" ];
        cell.textLabel.text=self.seasonalProducts[indexPath.row][@"NAME"];
-    
+    cell.textLabel.textColor=[UIColor whiteColor];
+    cell.backgroundColor=[[UIColor blackColor] colorWithAlphaComponent:0.5];
+   // if (cell.backgroundView==nil)
+  ///  {
+ //       UIBlurEffect *blur=[UIBlurEffect effectWithStyle: UIBlurEffectStyleLight];
+ //       UIVisualEffectView *vefv=[[UIVisualEffectView alloc] initWithEffect:blur];
+ //       UIVisualEffect *vibrancy=[UIVibrancyEffect effectForBlurEffect:blur];
+       /* UIVisualEffectView *vibrancyView=[[UIVisualEffectView alloc] initWithEffect:vibrancy];
+        vibrancyView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [vefv.contentView addSubview:vibrancyView];
+        [cell.textLabel removeFromSuperview];
+        [vibrancyView.contentView addSubview:cell.textLabel];*/
+ //       cell.backgroundView=vefv;
+///    }
     return cell;
 }
 
@@ -129,8 +168,10 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"showProduct"])
+    {
+        ((ProductViewController*)segue.destinationViewController).productId=self.productId;
+    }
 }
 
 

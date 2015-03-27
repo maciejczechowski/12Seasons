@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *image_url;
 @property (nonatomic, strong) NSString *f2f_url;
 @property (nonatomic, strong) NSString *publisher_url;
+@property (nonatomic, strong) NSString *source_url;
+@property (nonatomic, strong) NSString *recipe_id;
 @end

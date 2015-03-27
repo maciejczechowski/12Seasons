@@ -10,13 +10,25 @@
 
 @interface RecipeViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnPickIt;
+- (IBAction)pickItAction:(id)sender;
+@property (nonatomic, strong) NSMutableArray *pickedRecipes;
 @end
 
 @implementation RecipeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.pickedRecipes=[[[NSUserDefaults standardUserDefaults] arrayForKey:@"PickedRecipes"] mutableCopy];
+    
+    if (self.pickedRecipes==nil)
+    {
+        self.pickedRecipes=[[NSMutableArray alloc] init];
+    }
+    if ([self.pickedRecipes filteredArrayUsingPredicate: [NSPredicate predicateWithFormat:@"SELF==%@",self.recipeId]].count>0) {
+        self.btnPickIt.title=@"PICKED";
+        self.btnPickIt.enabled=NO;
+    }
     // Do any additional setup after loading the view.
 }
 
@@ -37,4 +49,14 @@
 }
 */
 
+- (IBAction)pickItAction:(id)sender {
+
+    [self.pickedRecipes addObject:self.recipeId];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:self.pickedRecipes forKey:@"PickedRecipes"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.btnPickIt.title=@"PICKED";
+    self.btnPickIt.enabled=NO;
+    
+}
 @end

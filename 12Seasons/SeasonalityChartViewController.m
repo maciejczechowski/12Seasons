@@ -8,12 +8,14 @@
 
 #import "SeasonalityChartViewController.h"
 #import "SeasonalitySingleMonthTableViewController.h"
+#import "ProductViewController.h"
 
-@interface SeasonalityChartViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface SeasonalityChartViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, SeasonalitySingleMonthDelegate>
 @property (nonatomic, strong) SeasonalitySingleMonthTableViewController *previousMonth;
 @property (nonatomic, strong) SeasonalitySingleMonthTableViewController *currentMonth;
 @property (nonatomic, strong) SeasonalitySingleMonthTableViewController *nextMonth;
-
+@property (nonatomic, strong) UIPageControl *pager;
+@property (nonatomic, strong) NSString *producId;
 
 @end
 
@@ -34,6 +36,23 @@
 
     self.automaticallyAdjustsScrollViewInsets=NO;
     self.currentMonthId=3;
+    
+    self.pager=[[UIPageControl alloc] init];
+    self.pager.translatesAutoresizingMaskIntoConstraints=NO;
+    [self.view addSubview: self.pager];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.pager attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.pager attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:-20]];
+    
+    self.pager.numberOfPages=12;
+   self.pager.currentPage=self.currentMonthId-1;
+  ;
+    
+    self.view.opaque=NO;
+
+    //UIView *test=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+   // test.backgroundColor=[UIColor redColor];
+    //[self.view addSubview:test];
    
 }
 
@@ -44,11 +63,18 @@
     self.currentMonth.MonthId=self.currentMonthId;
     self.nextMonth.MonthId=[self getNextMonthId:self.currentMonthId];
     self.previousMonth.MonthId=[self getPreviousMonthId:self.currentMonthId];
+    
+    self.previousMonth.monthDelegate=self;
+     self.currentMonth.monthDelegate=self;
+    
     self.title=self.currentMonth.title;
  
-    self.view.backgroundColor=[UIColor whiteColor];
+    self.view.backgroundColor=[UIColor clearColor];
     
     [self setViewControllers:[[NSArray alloc] initWithObjects:self.currentMonth, nil ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil ];       // Do any additional setup after loading the view.
+    
+    if (self.chartDelegate)
+        [self.chartDelegate transitionedToMonth:self.currentMonthId];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -90,10 +116,13 @@
             self.nextMonth.MonthId=[self getNextMonthId:mid];
             self.title=((UIViewController*)[self.viewControllers firstObject]).title;
         }
-        
+         self.pager.currentPage=self.currentMonthId-1;
+        if (self.chartDelegate)
+            [self.chartDelegate transitionedToMonth:self.currentMonthId];
   
     }
 }
+
 
 -(int)getPreviousMonthId:(int)monthId
 {
@@ -108,6 +137,12 @@
         return 1;
     return  monthId+1;
 }
+
+-(void)selectedProduct:(NSString *)productId{
+    self.producId=productId;
+    [self performSegueWithIdentifier:@"showProduct" sender:self];
+    
+}
 /*
 -(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController{
     return  12;
@@ -117,14 +152,19 @@
     return self.currentMonthId-1;
 }
 */
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showProduct"])
+    {
+        ((ProductViewController*)segue.destinationViewController).productId=self.producId;
+    }
+    
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 @end

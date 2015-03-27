@@ -8,11 +8,13 @@
 
 #import "CongratulationsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <MBProgressHUD.h>
 @interface CongratulationsViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *btnClose;
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 - (IBAction)shareAction:(id)sender;
 - (IBAction)closeAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *lblScore;
 
 @end
 
@@ -20,6 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.lblScore.text=[NSString stringWithFormat:@"You just received  %d points!",self.score ];
     // Do any additional setup after loading the view.
 }
 
@@ -44,6 +47,7 @@
 }
 
 - (IBAction)shareAction:(id)sender {
+     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSMutableDictionary<FBOpenGraphObject> *object = [FBGraphObject openGraphObjectForPost];
     
     // specify that this Open Graph object will be posted to Facebook
@@ -69,76 +73,68 @@
     [FBRequestConnection startForPostOpenGraphObject:object completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if(!error) {
             // get the object ID for the Open Graph object that is now stored in the Object API
-            NSString *objectId = [result objectForKey:@"id"];
-            NSLog([NSString stringWithFormat:@"object id: %@", objectId]);
+        NSString *objectId = [result objectForKey:@"id"];
+        NSLog([NSString stringWithFormat:@"object id: %@", objectId]);
             
-            id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
-            [action setObject:objectId forKey:@"product"];
-           NSNumber *latitude=[NSNumber numberWithDouble:self.location.coordinate.latitude];
-            NSNumber *longitude=[NSNumber numberWithDouble:self.location.coordinate.longitude];;
-           // a//ction[@"data"] = @{@"type":@"geo_point",
-           //                     @"location" : @{ @"longitude": @"-58.381667", @"latitude": @"-34.603333"} };
-           
-      
-         /*  // action[@"data"] =  @{
-                                        @"latitude": latitude, // these are NSNumber //objects, but i also
-                                        @"longitude": longitude // tried to pass NSString objects
-                                        
-                                };*/
-           
-          //  action[@"latitude"]=
-            //      action[@"longitude"]=[NSNumber numberWithDouble:self.location.coordinate.longitude];
-           // [action setObject:@{ @"longitude": @"-58.381667", @"latitude": @"-34.603333"}  forKey:@"location"];
-    //    [action setObject: @{@"type":@"geo_point",
-         //                  @"longitude": @"-58.381667", @"latitude": @"-34.603333"}  forKey:@"location"];
+        id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
+        [action setObject:objectId forKey:@"product"];
+        NSNumber *latitude=[NSNumber numberWithDouble:self.location.coordinate.latitude];
+        NSNumber *longitude=[NSNumber numberWithDouble:self.location.coordinate.longitude];;
+        
+        action[@"location:latitude"]=latitude;
+        action[@"location:longitude"]=longitude;
             
-         //   [action setObject:@{@"latitude": latitude,
-           //                              @"longitude": longitude}
-           //                     forKey:@"location"];
-            
-           
-  
-                 //      locationObject[@"data:latitude"]=latitude;
-          //  locationObject[@"data:longitude"]=longitude;
-            
-            // THIS is the key, the custom properties MUST be within a dictionary called "data"
-           // openGraphObject[@"data"] = @{@"location": @{@"latitude": self.imageLatitude, @"longitude": self.imageLongitude }};
-
-      
-               action[@"location:latitude"]=latitude;
-               action[@"location:longitude"]=longitude;
-            
-            
-            NSLog(@"Action: %@",[action description]);
-          //  action[@"location"] =  @{ @"longitude": @"-58.381667", @"latitude": @"-34.603333"} ;
-            
-            [FBRequestConnection startForPostWithGraphPath:@"me/seasoneater:pin"
+        NSLog(@"Action: %@",[action description]);
+    
+       [FBRequestConnection startForPostWithGraphPath:@"me/seasoneater:pin"
                                                graphObject:action
                                          completionHandler:^(FBRequestConnection *connection,
                                                              id result,
                                                              NSError *error) {
-                                             if(!error) {
-                                                 NSLog([NSString stringWithFormat:@"OG story posted, story id: %@", [result objectForKey:@"id"]]);
+                        if(!error) {
+                            if (self.delegate)
+                               [self.delegate finished];
+                                               /*  NSLog([NSString stringWithFormat:@"OG story posted, story id: %@", [result objectForKey:@"id"]]);
                                                  [[[UIAlertView alloc] initWithTitle:@"OG story posted"
                                                                              message:@"Check your Facebook profile or activity log to see the story."
                                                                             delegate:self
                                                                    cancelButtonTitle:@"OK!"
-                                                                   otherButtonTitles:nil] show];
-                                             }
-                                             else {
+                                                                   otherButtonTitles:nil] show];*/
+                          }
+                            else {
+                            [MBProgressHUD hideHUDForView:self.view animated:YES];
+                            NSString *errorMessage = [error localizedDescription];
+                                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook error"
+                                                 message:errorMessage
+                                                 delegate:nil
+                                                cancelButtonTitle:nil
+                                                otherButtonTitles:@"Dismiss", nil];
+                            [alert show];
+
+                                                 
                                                  // An error occurred
                                                  NSLog(@"Error posting the Open Graph object to the Object API: %@", error);
                                              }
                                          }];
         } else {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             // An error occurred
             NSLog(@"Error posting the Open Graph object to the Object API: %@", error);
+            NSString *errorMessage = [error localizedDescription];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook error"
+                                                            message:errorMessage
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"Dismiss", nil];
+            [alert show];
+
         }
     }];
   
 }
 
 - (IBAction)closeAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.delegate)
+        [self.delegate finished];
 }
 @end

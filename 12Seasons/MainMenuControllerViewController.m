@@ -10,16 +10,19 @@
 #import  <PFFacebookUtils.h>
 #import "SeasonalityChartViewController.h"
 #import "UIImage+ImageEffects.h"
+#import "ParseManager.h"
+#import <Parse/Parse.h>
 
 @interface MainMenuControllerViewController ()
 @property (weak, nonatomic) IBOutlet UIView *viewProfile;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnProducts;
-@property (weak, nonatomic) IBOutlet UIButton *btnMonthly;
+
 @property (weak, nonatomic) IBOutlet UIButton *btnPicks;
 - (IBAction)touchLogin:(id)sender;
 @property (weak, nonatomic) IBOutlet FBProfilePictureView *viewProfileImage;
 @property (weak, nonatomic) IBOutlet UIButton *btnMap;
+@property (weak, nonatomic) IBOutlet UILabel *lblScore;
 
 @end
 
@@ -29,7 +32,7 @@
     [super viewDidLoad];
     
    
-   
+  /*
     UIImage *image=[[UIImage imageNamed:@"veggies.jpg" ] applyBlurWithRadius:0.1 tintColor:[UIColor clearColor] saturationDeltaFactor:0.4 maskImage:nil];
     
    // UIImage *image=[UIImage imageNamed:@"veggies.jpg" ];
@@ -42,7 +45,7 @@
    imageView.contentMode=UIViewContentModeScaleAspectFill;
     [self.view addSubview:imageView];
     [self.view sendSubviewToBack:imageView];
-  
+  */
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,6 +59,16 @@
     if ([PFUser currentUser] && // Check if user is cached
         [PFFacebookUtils isLinkedWithUser:[PFUser currentUser]]) {
         [self showButtons:YES];
+      
+        PFUser *usr=[PFUser currentUser] ;
+        PFQuery *uquery=[PFUser query];
+        [uquery getObjectInBackgroundWithId:usr.objectId block:^(PFObject *object, NSError *error) {
+            self.lblScore.text=[NSString stringWithFormat:@"Your score: %d",[(NSNumber*)object[@"score"] intValue]];
+
+        }];
+        
+     
+        
     }
     else
     {
@@ -85,13 +98,18 @@
         self.viewProfileImage.pictureCropping=FBProfilePictureCroppingSquare;
         self.btnLogin.hidden=YES;
         self.btnMap.hidden=NO;
+        self.lblScore.hidden=NO;
+       
     }
     else {
         self.btnLogin.hidden=NO;
         self.btnMap.hidden=YES;
+        self.lblScore.hidden=YES;
     }
     
 }
+
+
 - (IBAction)touchLogin:(id)sender {
      // Set permissions required from the facebook user account
      NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location",@"publish_actions"];
