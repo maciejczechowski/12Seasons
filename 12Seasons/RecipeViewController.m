@@ -25,7 +25,7 @@
     {
         self.pickedRecipes=[[NSMutableArray alloc] init];
     }
-    if ([self.pickedRecipes filteredArrayUsingPredicate: [NSPredicate predicateWithFormat:@"SELF==%@",self.recipeId]].count>0) {
+    if ([self.pickedRecipes filteredArrayUsingPredicate: [NSPredicate predicateWithFormat:@"SELF['id']==%@",self.recipeUrl]].count>0) {
         self.btnPickIt.title=@"PICKED";
         self.btnPickIt.enabled=NO;
     }
@@ -51,7 +51,9 @@
 
 - (IBAction)pickItAction:(id)sender {
 
-    [self.pickedRecipes addObject:self.recipeId];
+    [self.pickedRecipes addObject:@{ @"id":self.recipeUrl,
+                                     @"name":self.recipeName
+                                     }];
     
     [[NSUserDefaults standardUserDefaults] setObject:self.pickedRecipes forKey:@"PickedRecipes"];
     [[NSUserDefaults standardUserDefaults] synchronize];

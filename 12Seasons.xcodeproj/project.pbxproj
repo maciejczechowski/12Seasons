@@ -52,6 +52,13 @@
 		3FA965D61AB395BB00A110AD /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA965D51AB395BB00A110AD /* Social.framework */; };
 		3FA965DA1AB395D300A110AD /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA965D91AB395D300A110AD /* libz.dylib */; };
 		3FA965DC1AB395DC00A110AD /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA965DB1AB395DC00A110AD /* libsqlite3.dylib */; };
+		3FAA98481AC60EBE008DA88A /* MyPicksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA98471AC60EBE008DA88A /* MyPicksViewController.m */; };
+		3FAA984F1AC61FC4008DA88A /* m7@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA98491AC61FC4008DA88A /* m7@2x.jpg */; };
+		3FAA98501AC61FC4008DA88A /* m8@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA984A1AC61FC4008DA88A /* m8@2x.jpg */; };
+		3FAA98511AC61FC4008DA88A /* m9@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA984B1AC61FC4008DA88A /* m9@2x.jpg */; };
+		3FAA98531AC61FC4008DA88A /* m11@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA984D1AC61FC4008DA88A /* m11@2x.jpg */; };
+		3FAA98541AC61FC4008DA88A /* m12@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA984E1AC61FC4008DA88A /* m12@2x.jpg */; };
+		3FAA98561AC620DE008DA88A /* m10@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA98551AC620DE008DA88A /* m10@2x.jpg */; };
 		3FCE4B261AAF8CD900A8317D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FCE4B251AAF8CD900A8317D /* main.m */; };
 		3FCE4B291AAF8CD900A8317D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FCE4B281AAF8CD900A8317D /* AppDelegate.m */; };
 		3FCE4B2F1AAF8CD900A8317D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FCE4B2D1AAF8CD900A8317D /* Main.storyboard */; };
@@ -137,6 +144,14 @@
 		3FA965D51AB395BB00A110AD /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3FA965D91AB395D300A110AD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		3FA965DB1AB395DC00A110AD /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		3FAA98461AC60EBE008DA88A /* MyPicksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPicksViewController.h; sourceTree = "<group>"; };
+		3FAA98471AC60EBE008DA88A /* MyPicksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPicksViewController.m; sourceTree = "<group>"; };
+		3FAA98491AC61FC4008DA88A /* m7@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m7@2x.jpg"; path = "Images/m7@2x.jpg"; sourceTree = "<group>"; };
+		3FAA984A1AC61FC4008DA88A /* m8@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m8@2x.jpg"; path = "Images/m8@2x.jpg"; sourceTree = "<group>"; };
+		3FAA984B1AC61FC4008DA88A /* m9@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m9@2x.jpg"; path = "Images/m9@2x.jpg"; sourceTree = "<group>"; };
+		3FAA984D1AC61FC4008DA88A /* m11@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m11@2x.jpg"; path = "Images/m11@2x.jpg"; sourceTree = "<group>"; };
+		3FAA984E1AC61FC4008DA88A /* m12@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m12@2x.jpg"; path = "Images/m12@2x.jpg"; sourceTree = "<group>"; };
+		3FAA98551AC620DE008DA88A /* m10@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m10@2x.jpg"; path = "Images/m10@2x.jpg"; sourceTree = "<group>"; };
 		3FCE4B201AAF8CD900A8317D /* 12Seasons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 12Seasons.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FCE4B241AAF8CD900A8317D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FCE4B251AAF8CD900A8317D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -247,6 +262,8 @@
 				3F40D5181AC0CE2600893327 /* RecipeViewController.m */,
 				3F8F1E551AC21757007DA713 /* CongratulationsViewController.h */,
 				3F8F1E561AC21757007DA713 /* CongratulationsViewController.m */,
+				3FAA98461AC60EBE008DA88A /* MyPicksViewController.h */,
+				3FAA98471AC60EBE008DA88A /* MyPicksViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -272,6 +289,12 @@
 		3F8F1E601AC585D6007DA713 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3FAA98551AC620DE008DA88A /* m10@2x.jpg */,
+				3FAA98491AC61FC4008DA88A /* m7@2x.jpg */,
+				3FAA984A1AC61FC4008DA88A /* m8@2x.jpg */,
+				3FAA984B1AC61FC4008DA88A /* m9@2x.jpg */,
+				3FAA984D1AC61FC4008DA88A /* m11@2x.jpg */,
+				3FAA984E1AC61FC4008DA88A /* m12@2x.jpg */,
 				3F8F1E6C1AC5BABB007DA713 /* m5@2x.jpg */,
 				3F8F1E6D1AC5BABB007DA713 /* m6@2x.jpg */,
 				3F8F1E6A1AC59616007DA713 /* m4@2x.jpg */,
@@ -463,6 +486,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FAA984F1AC61FC4008DA88A /* m7@2x.jpg in Resources */,
 				3F8F1E6B1AC59616007DA713 /* m4@2x.jpg in Resources */,
 				3F8F1E661AC587E0007DA713 /* m3@2x.jpg in Resources */,
 				3FCE4B2F1AAF8CD900A8317D /* Main.storyboard in Resources */,
@@ -470,11 +494,16 @@
 				3F8F1E6E1AC5BABB007DA713 /* m5@2x.jpg in Resources */,
 				3FCE4B341AAF8CD900A8317D /* LaunchScreen.xib in Resources */,
 				3F8F1E6F1AC5BABB007DA713 /* m6@2x.jpg in Resources */,
+				3FAA98511AC61FC4008DA88A /* m9@2x.jpg in Resources */,
 				3F8F1E621AC5866D007DA713 /* m1@2x.jpg in Resources */,
 				3FCE4B311AAF8CD900A8317D /* Images.xcassets in Resources */,
+				3FAA98501AC61FC4008DA88A /* m8@2x.jpg in Resources */,
 				3F8F1E591AC4A5EA007DA713 /* veggies.jpg in Resources */,
 				3F1623C01AB3B21E0084BB54 /* seasons.sqlite in Resources */,
+				3FAA98541AC61FC4008DA88A /* m12@2x.jpg in Resources */,
+				3FAA98561AC620DE008DA88A /* m10@2x.jpg in Resources */,
 				3F8F1E651AC587E0007DA713 /* m2@2x.jpg in Resources */,
+				3FAA98531AC61FC4008DA88A /* m11@2x.jpg in Resources */,
 				3F8F1E5F1AC4CF25007DA713 /* 4seasons@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,6 +570,7 @@
 				3F1623C61AB79A340084BB54 /* ProductListTableViewController.m in Sources */,
 				3F8F1E571AC21757007DA713 /* CongratulationsViewController.m in Sources */,
 				3FCE4B261AAF8CD900A8317D /* main.m in Sources */,
+				3FAA98481AC60EBE008DA88A /* MyPicksViewController.m in Sources */,
 				3F1623C91AB8CA1F0084BB54 /* ProductHeaderViewController.m in Sources */,
 				3F1623CF1AB8CEA60084BB54 /* FoundItTableViewController.m in Sources */,
 				3F8F1E5D1AC4AC9F007DA713 /* UIImage+ImageEffects.m in Sources */,

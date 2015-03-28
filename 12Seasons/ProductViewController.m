@@ -23,7 +23,10 @@
 @property (nonatomic, strong) UIButton *showMore;
 @property int currentPage;
 @property (nonatomic, strong) NSString *currentRecipeUrl;
+@property (nonatomic, strong) NSString *currentRecipeName;
 @property (nonatomic, strong) NSString *rId;
+@property (nonatomic, strong) UIActivityIndicatorView *loading;
+
 @end
 
 @implementation ProductViewController
@@ -70,6 +73,7 @@
     [[RKObjectManager sharedManager] getObjectsAtPath:@"/api/search"
                                            parameters:queryParams
                                               success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                                                  [self.loading stopAnimating];
                                                   self.recipes = mappingResult.array;
                                                   self.showMore.hidden=NO;
                                                   
@@ -83,6 +87,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.loading.frame=CGRectMake(0,0,100,44);//, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
+    self.view.backgroundColor=[UIColor whiteColor];
     self.currentPage=1;
     self.locationManager = [[CLLocationManager alloc] init];
     [self.locationManager requestWhenInUseAuthorization];
@@ -156,9 +163,23 @@
     return  nil;
         
 }
+
+-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    if (section==0 && (!self.productLocationData || self.productLocationData.count==0))
+    {
+        return @"Nobody have pinned this item in your area. Be first and get bonus points!";
+    }
+    return  nil;
+}
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    if (section==1 && self.recipes.count>0)
+    if (section==1 && self.recipes.count>0){
+      
         return self.showMore;
+    }
+    else if (section==1 && !self.recipes) {
+        [self.loading startAnimating];
+        return  self.loading;
+    }
     return  nil;
 }
 
@@ -210,6 +231,7 @@
     if (indexPath.section==1){
         self.currentRecipeUrl=((F2FRecipe*)self.recipes[indexPath.row]).source_url;
         self.rId=((F2FRecipe*)self.recipes[indexPath.row]).recipe_id;
+        self.currentRecipeName=((F2FRecipe*)self.recipes[indexPath.row]).title;
     }
     return indexPath;
 
@@ -230,6 +252,7 @@
         RecipeViewController *rvc=(RecipeViewController*)segue.destinationViewController;
         rvc.recipeUrl=self.currentRecipeUrl;
         rvc.recipeId=self.rId;
+        rvc.recipeName=self.currentRecipeName;
     }
 }
 

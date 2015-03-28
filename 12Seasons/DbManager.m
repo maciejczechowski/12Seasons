@@ -69,7 +69,7 @@ static NSString *databaseName;
     
 
     
-    FMResultSet *s = [self.db executeQuery: [NSString stringWithFormat:@"SELECT P.ID, P.NAME, M%i FROM SEASONALITY JOIN PRODUCT P ON P.ID=PRODUCT_ID WHERE  M%i IS NOT NULL AND REGION_ID=?",forMonth,forMonth], forRegion ];
+    FMResultSet *s = [self.db executeQuery: [NSString stringWithFormat:@"SELECT P.ID, P.NAME, M%i FROM SEASONALITY JOIN PRODUCT P ON P.ID=PRODUCT_ID WHERE  M%i IS NOT NULL AND M%i>0 AND REGION_ID=? ORDER BY M%i desc, P.NAME",forMonth,forMonth,forMonth,forMonth], forRegion ];
     
    //   FMResultSet *s = [self.db executeQueryWithFormat:@"SELECT * FROM SEASONALITY"];
     while ([s next]) {
@@ -87,8 +87,9 @@ static NSString *databaseName;
 -(NSString*)getProductById:(NSString*)productId{
     
     FMResultSet *s = [self.db executeQueryWithFormat:@"SELECT P.NAME FROM PRODUCT P WHERE ID=%@",productId];
-    [s next];
-    return [s stringForColumnIndex:0];
+    if ([s next])
+        return [s stringForColumnIndex:0];
+    return  productId;
 
 }
 

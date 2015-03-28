@@ -22,10 +22,11 @@
 @property (strong, nonatomic) NSArray *productsInRange;
 @property (strong, nonatomic) NSMutableDictionary *productsDistances;
 @property (strong, nonatomic) CLLocationManager *locationManager;
-@property int currentAnnotatedProduct;
+@property NSString *currentAnnotatedProduct;
 @end
 
 @implementation MapViewController
+BOOL coordinateSet;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,7 +34,7 @@
     self.locationManager=[[CLLocationManager alloc] init ];
     [self.locationManager requestWhenInUseAuthorization];
     self.mapView.showsUserLocation=YES;
-    self.currentAnnotatedProduct=-1;
+  
     // Do any additional setup after loading the view.
 }
 
@@ -64,8 +65,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *currentEntry=self.productsInRange[indexPath.row];
-    NSNumber *productId=currentEntry[@"ID"];
-    self.currentAnnotatedProduct=[productId intValue];
+
+    self.currentAnnotatedProduct=currentEntry[@"ID"];
     CLLocationCoordinate2D center = self.mapView.centerCoordinate;
     CLLocationCoordinate2D forceChg;
     forceChg.latitude = 0;
@@ -77,13 +78,17 @@
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    [self.locationManager stopUpdatingLocation];
+    
+    if (!coordinateSet ) {
     MKCoordinateRegion mapRegion;
     mapRegion.center = mapView.userLocation.coordinate;
-    mapRegion.span.latitudeDelta = 0.2;
-    mapRegion.span.longitudeDelta = 0.2;
+    mapRegion.span.latitudeDelta = 0.05;
+    mapRegion.span.longitudeDelta = 0.05;
     
     [mapView setRegion:mapRegion animated: YES];
-    
+        coordinateSet=YES;
+    }
     //query the nearest
     [ParseManager getItemsNear:userLocation.location.coordinate withRadius:20  withBlock:^(NSArray *objects, NSError *error) {
         
@@ -149,7 +154,7 @@ stringWithHumanizedTimeDifference
     
    [ NSString stringWithFormat:@"%@ (%@)",(NSString*)productData[@"NAME"], whenString ];
     productAnnotation.subtitle=(NSString*)productData[@"COMMENTS"];
-    productAnnotation.ProductId=[(NSNumber*)productData[@"ID"] intValue];
+    productAnnotation.ProductId=productData[@"ID"];
     [self.mapView addAnnotation:productAnnotation];
 }
 
@@ -174,7 +179,7 @@ stringWithHumanizedTimeDifference
                     } else {
             pinView.annotation = annotation;
         }
-        if (productAnnotation.ProductId==self.currentAnnotatedProduct)
+        if ([productAnnotation.ProductId isEqualToString:self.currentAnnotatedProduct])
             pinView.pinColor=MKPinAnnotationColorGreen;
         else
             pinView.pinColor=MKPinAnnotationColorRed;

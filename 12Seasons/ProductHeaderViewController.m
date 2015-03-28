@@ -27,7 +27,7 @@
     [super viewDidLoad];
     self.dbManager=[[DbManager alloc] init];
 
-    
+    self.view.backgroundColor=[UIColor whiteColor];
     self.seasonalityData=[self.dbManager getSeasonDataForProductId:self.ProductId inRegion:[AppDelegate getCurrentRegion]];
 
    
@@ -57,9 +57,9 @@
             month.textAlignment=NSTextAlignmentCenter;
             
              float percent= ([self.seasonalityData[monthNumber-1] integerValue])/100.0;
-            month.backgroundColor=[UIColor colorWithRed:145/255.0 green:211/255.0 blue:148/255.0 alpha:(1) ] ;
+         //   month.backgroundColor=[UIColor colorWithRed:145/255.0 green:211/255.0 blue:148/255.0 alpha:(1) ] ;
             month.alpha=percent;
-            month.textColor=[UIColor whiteColor];
+            month.textColor=[UIColor colorWithRed:6/255.0 green:148/255.0 blue:22/255.0 alpha:(1) ];
            
             [self.view addSubview:month];
             

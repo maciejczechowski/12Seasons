@@ -9,6 +9,6 @@
 #import <MapKit/MapKit.h>
 
 @interface MKProductAnnotation : MKPointAnnotation
-@property int ProductId;
+@property NSString *ProductId;
 
 @end

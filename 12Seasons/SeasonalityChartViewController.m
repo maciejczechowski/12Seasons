@@ -66,6 +66,7 @@
     
     self.previousMonth.monthDelegate=self;
      self.currentMonth.monthDelegate=self;
+       self.nextMonth.monthDelegate=self;
     
     self.title=self.currentMonth.title;
  

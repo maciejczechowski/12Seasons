@@ -8,6 +8,7 @@
 
 #import "CongratulationsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+
 #import <MBProgressHUD.h>
 @interface CongratulationsViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *btnClose;
@@ -48,6 +49,27 @@
 
 - (IBAction)shareAction:(id)sender {
      [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    NSDictionary *properties = @{
+                                 @"og:type": @"fitness.course",
+                                 @"og:title": @"Sample Course",
+                                 @"og:description": @"This is a sample course.",
+                                 @"fitness:duration:value": @100,
+                                 @"fitness:duration:units": @"s",
+                                 @"fitness:distance:value": @12,
+                                 @"fitness:distance:units": @"km",
+                                 @"fitness:speed:value": @5,
+                                 @"fitness:speed:units": @"m/s",
+                                 };
+    
+    FBSDKShareOpenGraphObject *object = [[FBSDKShareOpenGraphObject alloc] initWithProperties:properties];
+    FBSDKShareOpenGraphAction *action = [[FBSDKShareOpenGraphAction alloc] init];
+    action.actionType = @"fitness.runs";
+    [action setObject:object forKey:@"fitness:course"];
+    FBSDKShareOpenGraphContent *content = [[FBSDKShareOpenGraphContent alloc] init];
+    content.action = action;
+    content.previewPropertyName = @"fitness:course";
+    
+    /*
     NSMutableDictionary<FBOpenGraphObject> *object = [FBGraphObject openGraphObjectForPost];
     
     // specify that this Open Graph object will be posted to Facebook
@@ -94,12 +116,7 @@
                         if(!error) {
                             if (self.delegate)
                                [self.delegate finished];
-                                               /*  NSLog([NSString stringWithFormat:@"OG story posted, story id: %@", [result objectForKey:@"id"]]);
-                                                 [[[UIAlertView alloc] initWithTitle:@"OG story posted"
-                                                                             message:@"Check your Facebook profile or activity log to see the story."
-                                                                            delegate:self
-                                                                   cancelButtonTitle:@"OK!"
-                                                                   otherButtonTitles:nil] show];*/
+     
                           }
                             else {
                             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -129,7 +146,7 @@
             [alert show];
 
         }
-    }];
+    }];*/
   
 }
 
