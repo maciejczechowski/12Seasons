@@ -17,4 +17,9 @@
 +(void)getItemsNear:(CLLocationCoordinate2D)location withRadius:(double)miles withBlock:(PFArrayResultBlock)completionBlock;
 
 +(void)getProduct:(NSString*)productId Near:(CLLocationCoordinate2D)location withRadius:(double)miles withBlock:(PFArrayResultBlock)completionBlock;
+
++(void)getTopUsersWithCompletionBlock:(PFArrayResultBlock)completionBlock;
+
+
++(void)getCurrentUserPosition:(void(^)(NSDictionary*,  NSError* error))completionBlock;
 @end

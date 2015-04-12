@@ -33,7 +33,7 @@ BOOL coordinateSet;
     
     self.locationManager=[[CLLocationManager alloc] init ];
     [self.locationManager requestWhenInUseAuthorization];
-    self.mapView.showsUserLocation=YES;
+ self.mapView.showsUserLocation=YES;
   
     // Do any additional setup after loading the view.
 }
@@ -52,7 +52,7 @@ BOOL coordinateSet;
     cell.textLabel.text=productName;
     
     
-    cell.detailTextLabel.text=[NSString stringWithFormat:@"%f km", [(NSNumber*)currentEntry[@"DISTANCE"] doubleValue]/1000 ];
+    cell.detailTextLabel.text=[NSString stringWithFormat:@"%.2f km", [(NSNumber*)currentEntry[@"DISTANCE"] doubleValue]/1000 ];
     
     
     return  cell;
@@ -75,7 +75,12 @@ BOOL coordinateSet;
     self.mapView.centerCoordinate = center;
 }
 
-
+-(void)viewWillAppear:(BOOL)animated{
+    if (!coordinateSet)
+    {
+        [self.locationManager startUpdatingLocation];
+    }
+}
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     [self.locationManager stopUpdatingLocation];

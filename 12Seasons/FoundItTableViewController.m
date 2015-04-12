@@ -35,7 +35,7 @@
 @end
 
 @implementation FoundItTableViewController
-
+BOOL coordiateSet;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -59,15 +59,22 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [self.locationManager startUpdatingLocation];
+}
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    MKCoordinateRegion mapRegion;
-    mapRegion.center = mapView.userLocation.coordinate;
-    mapRegion.span.latitudeDelta = 0.2;
-    mapRegion.span.longitudeDelta = 0.2;
     
-    [mapView setRegion:mapRegion animated: YES];
+    if (!coordiateSet) {
+        MKCoordinateRegion mapRegion;
+            mapRegion.center = mapView.userLocation.coordinate;
+        mapRegion.span.latitudeDelta = 0.05;
+        mapRegion.span.longitudeDelta = 0.05;
+        coordiateSet=YES;
+    
+        [mapView setRegion:mapRegion animated: YES];
+    }
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)gestureRecognizer

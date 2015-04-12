@@ -8,6 +8,7 @@
 
 #import "MyPicksViewController.h"
 #import "RecipeViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface MyPicksViewController ()
 @property (nonatomic, strong) NSMutableArray *pickedRecipes;
@@ -100,6 +101,7 @@
     RecipeViewController *rvc=(RecipeViewController*)segue.destinationViewController;
     rvc.recipeUrl=self.pickedRecipes[self.tableView.indexPathForSelectedRow.row][@"id"];
     rvc.recipeName=self.pickedRecipes[self.tableView.indexPathForSelectedRow.row][@"name"];
+    rvc.recipeImageUrl=self.pickedRecipes[self.tableView.indexPathForSelectedRow.row][@"image"];
 }
 
 

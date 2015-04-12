@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UIButton *showMore;
 @property int currentPage;
 @property (nonatomic, strong) NSString *currentRecipeUrl;
+@property (nonatomic, strong) NSString *currentRecipeImageUrl;
 @property (nonatomic, strong) NSString *currentRecipeName;
 @property (nonatomic, strong) NSString *rId;
 @property (nonatomic, strong) UIActivityIndicatorView *loading;
@@ -206,7 +207,7 @@
         UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"foundItCell"];
         FoundItRecord *fir=self.productLocationData[indexPath.row];
         cell.textLabel.text=fir.placemarkName;
-        cell.detailTextLabel.text=[NSString stringWithFormat:@"%f km",[fir.location distanceFromLocation:self.locationManager.location]/1000];
+        cell.detailTextLabel.text=[NSString stringWithFormat:@"%.2f km",[fir.location distanceFromLocation:self.locationManager.location]/1000];
         return cell;
     }
     return  nil;
@@ -232,6 +233,7 @@
         self.currentRecipeUrl=((F2FRecipe*)self.recipes[indexPath.row]).source_url;
         self.rId=((F2FRecipe*)self.recipes[indexPath.row]).recipe_id;
         self.currentRecipeName=((F2FRecipe*)self.recipes[indexPath.row]).title;
+        self.currentRecipeImageUrl=((F2FRecipe*)self.recipes[indexPath.row]).image_url;;
     }
     return indexPath;
 
@@ -253,6 +255,7 @@
         rvc.recipeUrl=self.currentRecipeUrl;
         rvc.recipeId=self.rId;
         rvc.recipeName=self.currentRecipeName;
+        rvc.recipeImageUrl=self.currentRecipeImageUrl;
     }
 }
 

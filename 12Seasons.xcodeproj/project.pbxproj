@@ -59,6 +59,7 @@
 		3FAA98531AC61FC4008DA88A /* m11@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA984D1AC61FC4008DA88A /* m11@2x.jpg */; };
 		3FAA98541AC61FC4008DA88A /* m12@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA984E1AC61FC4008DA88A /* m12@2x.jpg */; };
 		3FAA98561AC620DE008DA88A /* m10@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3FAA98551AC620DE008DA88A /* m10@2x.jpg */; };
+		3FAA98591AC73E33008DA88A /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FAA98581AC73E33008DA88A /* UserViewController.m */; };
 		3FCE4B261AAF8CD900A8317D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FCE4B251AAF8CD900A8317D /* main.m */; };
 		3FCE4B291AAF8CD900A8317D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FCE4B281AAF8CD900A8317D /* AppDelegate.m */; };
 		3FCE4B2F1AAF8CD900A8317D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FCE4B2D1AAF8CD900A8317D /* Main.storyboard */; };
@@ -152,6 +153,8 @@
 		3FAA984D1AC61FC4008DA88A /* m11@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m11@2x.jpg"; path = "Images/m11@2x.jpg"; sourceTree = "<group>"; };
 		3FAA984E1AC61FC4008DA88A /* m12@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m12@2x.jpg"; path = "Images/m12@2x.jpg"; sourceTree = "<group>"; };
 		3FAA98551AC620DE008DA88A /* m10@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "m10@2x.jpg"; path = "Images/m10@2x.jpg"; sourceTree = "<group>"; };
+		3FAA98571AC73E33008DA88A /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
+		3FAA98581AC73E33008DA88A /* UserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewController.m; sourceTree = "<group>"; };
 		3FCE4B201AAF8CD900A8317D /* 12Seasons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 12Seasons.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FCE4B241AAF8CD900A8317D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FCE4B251AAF8CD900A8317D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -264,6 +267,8 @@
 				3F8F1E561AC21757007DA713 /* CongratulationsViewController.m */,
 				3FAA98461AC60EBE008DA88A /* MyPicksViewController.h */,
 				3FAA98471AC60EBE008DA88A /* MyPicksViewController.m */,
+				3FAA98571AC73E33008DA88A /* UserViewController.h */,
+				3FAA98581AC73E33008DA88A /* UserViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -571,6 +576,7 @@
 				3F8F1E571AC21757007DA713 /* CongratulationsViewController.m in Sources */,
 				3FCE4B261AAF8CD900A8317D /* main.m in Sources */,
 				3FAA98481AC60EBE008DA88A /* MyPicksViewController.m in Sources */,
+				3FAA98591AC73E33008DA88A /* UserViewController.m in Sources */,
 				3F1623C91AB8CA1F0084BB54 /* ProductHeaderViewController.m in Sources */,
 				3F1623CF1AB8CEA60084BB54 /* FoundItTableViewController.m in Sources */,
 				3F8F1E5D1AC4AC9F007DA713 /* UIImage+ImageEffects.m in Sources */,

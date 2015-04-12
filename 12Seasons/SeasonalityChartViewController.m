@@ -35,7 +35,13 @@
     self.delegate=self;
 
     self.automaticallyAdjustsScrollViewInsets=NO;
-    self.currentMonthId=3;
+    
+    NSDate *currentDate = [NSDate date];
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate]; // Get necessary date components
+    
+    [components month]; //gives you month
+    self.currentMonthId=(int)[components month];
     
     self.pager=[[UIPageControl alloc] init];
     self.pager.translatesAutoresizingMaskIntoConstraints=NO;
@@ -46,6 +52,8 @@
     
     self.pager.numberOfPages=12;
    self.pager.currentPage=self.currentMonthId-1;
+    self.pager.pageIndicatorTintColor=[UIColor whiteColor];
+    self.pager.alpha=0.5;
   ;
     
     self.view.opaque=NO;

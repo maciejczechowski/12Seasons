@@ -49,41 +49,48 @@
 
 - (IBAction)shareAction:(id)sender {
      [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSDictionary *properties = @{
-                                 @"og:type": @"fitness.course",
-                                 @"og:title": @"Sample Course",
-                                 @"og:description": @"This is a sample course.",
-                                 @"fitness:duration:value": @100,
-                                 @"fitness:duration:units": @"s",
-                                 @"fitness:distance:value": @12,
-                                 @"fitness:distance:units": @"km",
-                                 @"fitness:speed:value": @5,
-                                 @"fitness:speed:units": @"m/s",
-                                 };
-    
-    FBSDKShareOpenGraphObject *object = [[FBSDKShareOpenGraphObject alloc] initWithProperties:properties];
-    FBSDKShareOpenGraphAction *action = [[FBSDKShareOpenGraphAction alloc] init];
-    action.actionType = @"fitness.runs";
-    [action setObject:object forKey:@"fitness:course"];
-    FBSDKShareOpenGraphContent *content = [[FBSDKShareOpenGraphContent alloc] init];
-    content.action = action;
-    content.previewPropertyName = @"fitness:course";
-    
-    /*
+   
     NSMutableDictionary<FBOpenGraphObject> *object = [FBGraphObject openGraphObjectForPost];
+    
+    NSNumber *latitude=[NSNumber numberWithDouble:self.location.coordinate.latitude];
+    NSNumber *longitude=[NSNumber numberWithDouble:self.location.coordinate.longitude];;
+    
     
     // specify that this Open Graph object will be posted to Facebook
     object.provisionedForPost = YES;
     
     // for og:title
     object[@"title"] = self.productName;
-    
+    object[@"description"] = self.venue;
     // for og:type, this corresponds to the Namespace you've set for your app and the object type name
-    object[@"type"] = @"product";
-    object[@"data"] = @{@"type":@"geo_point",
-                            @"location" : @{ @"longitude": @"-58.381667", @"latitude": @"-34.603333"} };
+  //  object[@"type"] = @"foodatlocation";
+   // object[@"data:location:latitude"]=latitude;
+   // object[@"data:location:longitude"]=longitude;
+    //object[@"location:latitude"]=latitude;
+   // object[@"location:longitude"]=longitude;
+   // object[@"place:location:latitude"]=latitude;
+   // object[@"place:location:longitude"]=longitude;
+   // object[@"place:locaa"] = @{
+    //                        @"location" : @{ @"longitude": longitude, @"latitude": latitude} };
+    //[object setObject:@{ @"longitude": longitude, @"latitude": latitude} forKey:@"place:location"];
     
+    //[object setObject:@{@"place:location": @{ @"longitude": longitude, @"latitude": latitude } } forKey:@"data"];
+
+  //  object[@"place:location"] =
+    //                     @{ @"longitude": longitude, @"latitude": latitude} ;
+
+  ////  object[@"data"] =@{@"place": @{ @"location": @{
+    //                                          @"longitude": longitude,
+    //                                            @"latitude": latitude
+     //                                        }
+       //                             }
+     //                  };
+
    
+    
+    
+    
+    
     // for og:description
     
     //    // for og:url, we cover how this is used in the "Deep Linking" section below
@@ -92,21 +99,25 @@
     // for og:image we assign the image that we just staged, using the uri we got as a response
     // the image has to be packed in a dictionary like this:
     
-    [FBRequestConnection startForPostOpenGraphObject:object completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if(!error) {
+ //   [FBRequestConnection startForPostOpenGraphObject:object completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+     //   if(!error) {
             // get the object ID for the Open Graph object that is now stored in the Object API
-        NSString *objectId = [result objectForKey:@"id"];
-        NSLog([NSString stringWithFormat:@"object id: %@", objectId]);
+      //  NSString *objectId = [result objectForKey:@"id"];
+      //  NSLog([NSString stringWithFormat:@"object id: %@", objectId]);
             
         id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
-        [action setObject:objectId forKey:@"product"];
-        NSNumber *latitude=[NSNumber numberWithDouble:self.location.coordinate.latitude];
-        NSNumber *longitude=[NSNumber numberWithDouble:self.location.coordinate.longitude];;
-        
-        action[@"location:latitude"]=latitude;
-        action[@"location:longitude"]=longitude;
-            
+        [action setObject:object forKey:@"foodatlocation"];
+    
+            [action setObject:@{ @"longitude": longitude, @"latitude": latitude} forKey:@"location"];
+    
+      //  action[@"location:latitude"]=latitude;
+     //   action[@"location:longitude"]=longitude;
+    
+   // action[@"data:location:latitude"]=latitude;
+   // action[@"data:location:longitude"]=longitude;
+    
         NSLog(@"Action: %@",[action description]);
+    
     
        [FBRequestConnection startForPostWithGraphPath:@"me/seasoneater:pin"
                                                graphObject:action
@@ -114,6 +125,7 @@
                                                              id result,
                                                              NSError *error) {
                         if(!error) {
+                            NSLog(@"saved at id %@",result[@"id"]);
                             if (self.delegate)
                                [self.delegate finished];
      
@@ -133,20 +145,20 @@
                                                  NSLog(@"Error posting the Open Graph object to the Object API: %@", error);
                                              }
                                          }];
-        } else {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            // An error occurred
-            NSLog(@"Error posting the Open Graph object to the Object API: %@", error);
-            NSString *errorMessage = [error localizedDescription];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook error"
-                                                            message:errorMessage
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:@"Dismiss", nil];
-            [alert show];
+      //  } else {
+     //       [MBProgressHUD hideHUDForView:self.view animated:YES];
+     //       // An error occurred
+     //       NSLog(@"Error posting the Open Graph object to the Object API: %@", error);
+     //       NSString *errorMessage = [error localizedDescription];
+     //       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook error"
+     //                                                       message:errorMessage
+     //                                                      delegate:nil
+     //                                             cancelButtonTitle:nil
+     //                                             otherButtonTitles:@"Dismiss", nil];
+     //       [alert show];
 
-        }
-    }];*/
+     //   }
+  //  }];
   
 }
 

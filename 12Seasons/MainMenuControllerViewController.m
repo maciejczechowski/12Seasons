@@ -12,6 +12,7 @@
 #import "UIImage+ImageEffects.h"
 #import "ParseManager.h"
 #import <Parse/Parse.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface MainMenuControllerViewController ()
 @property (weak, nonatomic) IBOutlet UIView *viewProfile;
@@ -23,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet FBProfilePictureView *viewProfileImage;
 @property (weak, nonatomic) IBOutlet UIButton *btnMap;
 @property (weak, nonatomic) IBOutlet UILabel *lblScore;
+- (IBAction)tapped:(UITapGestureRecognizer *)sender;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *userGestureRecognizer;
 
 @end
 
@@ -99,12 +102,15 @@
         self.btnLogin.hidden=YES;
         self.btnMap.hidden=NO;
         self.lblScore.hidden=NO;
+        self.userGestureRecognizer.enabled=YES;
        
     }
     else {
         self.btnLogin.hidden=NO;
+
         self.btnMap.hidden=YES;
         self.lblScore.hidden=YES;
+        self.userGestureRecognizer.enabled=NO;
     }
     
 }
@@ -119,6 +125,10 @@
      //     [_activityIndicator stopAnimating]; // Hide loading indicator
      
      if (!user) {
+         
+  
+  
+         
          NSString *errorMessage = nil;
          if (!error) {
                 NSLog(@"Uh oh. The user cancelled the Facebook login.");
@@ -134,12 +144,28 @@
                                                otherButtonTitles:@"Dismiss", nil];
          [alert show];
         } else {
-     
+
+            FBRequest *request = [FBRequest requestForMe];
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                NSLog(@"test");
+                if(!error) {
+                    NSDictionary *userData = (NSDictionary *)result;
+                    NSString *name = userData[@"name"];
+                    user.username = name;
+                    NSLog(@"user:%@", name);
+                    [user saveEventually];
+                } else {
+                    NSLog(@"An error occurred: %@", error.localizedDescription);
+                }
+            }];
             [self showButtons:YES];
          }
      }];
      
      //   [_activityIndicator startAnimating]; // Show loading indicator until login is finished
      
+}
+- (IBAction)tapped:(UITapGestureRecognizer *)sender {
+    NSLog(@"TAPPED");
 }
 @end

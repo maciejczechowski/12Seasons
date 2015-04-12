@@ -150,7 +150,11 @@
     [self performSegueWithIdentifier:@"showProduct" sender:self];
     
 }
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [self dismissViewControllerAnimated:NO completion:nil];
+        
+    
+}
 
 #pragma mark - Navigation
 

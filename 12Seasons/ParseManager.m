@@ -107,4 +107,35 @@
     }];
 }
 
++(void)getTopUsersWithCompletionBlock:(PFArrayResultBlock)completionBlock
+{
+    PFQuery *query=[PFUser query];
+    [query orderByDescending:@"score"];
+    query.limit=10;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        completionBlock(objects,error);
+    }];
+    
+}
+
++(void)getCurrentUserPosition:(void(^)(NSDictionary*,  NSError* error))completionBlock
+{
+    PFUser *usr=[PFUser currentUser] ;
+    PFQuery *uquery=[PFUser query];
+    [uquery getObjectInBackgroundWithId:usr.objectId block:^(PFObject *object, NSError *error){
+        if (!error){
+            PFQuery *query=[PFUser query];
+            [query whereKey:@"score" greaterThan:object[@"score"]];
+            [query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+                if (!error) {
+                    completionBlock(@{@"position":[NSNumber numberWithInt:(number+1)], @"score":object[@"score"]},error);}
+                else
+                    completionBlock(nil,error);
+            }];
+            } else
+            completionBlock(nil,error);
+    }];
+    
+    
+}
 @end
